@@ -1,0 +1,32 @@
+{
+  "schemaVersion": 1,
+  "id": "ovs",
+  "version": "${version}",
+  "name": "OverseerUI",
+  "description": "Overseer UI is a mod made for controlling CRTL Minecraft Bots in a safe and secure way.",
+  "authors": [],
+  "contact": {},
+  "license": "All-Rights-Reserved",
+  "icon": "assets/ovs/icon.png",
+  "environment": "client",
+  "entrypoints": {
+    "client": [
+      "cn.crtlprototypestudios.client.ovsClient"
+    ],
+    "main": [
+      "cn.crtlprototypestudios.ovs"
+    ]
+  },
+  "mixins": [
+    "ovs.mixins.json",
+    {
+      "config": "ovs.client.mixins.json",
+      "environment": "client"
+    }
+  ],
+  "depends": {
+    "fabricloader": ">=${loader_version}",
+    "fabric": "*",
+    "minecraft": "${minecraft_version}"
+  }
+}
