@@ -37,6 +37,10 @@ dependencies {
 
     // Fabric API. This is technically optional, but you probably want it anyway.
     modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
+
+    modImplementation "io.wispforest:owo-lib:${project.owo_version}"
+    // only if you plan to use owo-config
+//    annotationProcessor "io.wispforest:owo-lib:${project.owo_version}"
 }
 
 processResources {
