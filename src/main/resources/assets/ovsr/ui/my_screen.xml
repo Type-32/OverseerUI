@@ -1,36 +1,6 @@
-<!-- assets/ovsr/ui/my_screen.xml -->
-<overseer-ui>
-    <components>
-        <flow-layout direction="vertical">
-            <children>
-                <label>
-                    <text>Hello, World!</text>
-                    <color>#FFFFFF</color>
-                </label>
-                <button>
-                    <text>Click Me!</text>
-                    <width>100</width>
-                    <height>20</height>
-                </button>
-            </children>
-            <padding>10</padding>
-            <gap>5</gap>
-        </flow-layout>
-    </components>
-
-    <templates>
-        <template name="button-group">
-            <flow-layout direction="horizontal">
-                <children>
-                    <button>
-                        <text>{{button1-text}}</text>
-                    </button>
-                    <button>
-                        <text>{{button2-text}}</text>
-                    </button>
-                </children>
-                <gap>5</gap>
-            </flow-layout>
-        </template>
-    </templates>
-</overseer-ui>
+<?xml version="1.0" encoding="UTF-8"?>
+<screen xmlns="http://crtlprototypestudios.cn/ovsr/ui"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://crtlprototypestudios.cn/ovsr/ui ui-schema.xsd">
+<!-- Your UI components here -->
+</screen>

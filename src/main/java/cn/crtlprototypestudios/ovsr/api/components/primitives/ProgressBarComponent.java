@@ -4,8 +4,12 @@ import cn.crtlprototypestudios.ovsr.api.components.BaseComponent;
 import cn.crtlprototypestudios.ovsr.api.xml.ComponentData;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class ProgressBarComponent extends BaseComponent {
     private static final ResourceLocation PROGRESS_TEXTURE = new ResourceLocation("ovsr", "textures/gui/progress_bar.png");
@@ -226,6 +230,22 @@ public class ProgressBarComponent extends BaseComponent {
         }
     }
 
+    public void setShowPercentage(boolean showPercentage) {
+        this.showPercentage = showPercentage;
+    }
+
+    public void setStyle(String style) {
+        this.style = ProgressStyle.valueOf(style);
+    }
+
+    public void setFillColor(int color) {
+        this.fillColor = color;
+    }
+
+    public void setBackgroundColor(int color) {
+        this.backgroundColor = color;
+    }
+
     public enum ProgressStyle {
         VANILLA,  // Classic Minecraft style
         MODERN,   // Rounded corners with clean look
@@ -238,6 +258,78 @@ public class ProgressBarComponent extends BaseComponent {
         RIGHT,
         UP,
         DOWN
+    }
+
+    @Override
+    public boolean isInteractive() {
+        return false; // Progress bars aren't interactive by default
+    }
+
+    @Override
+    public void onMouseEnter(int mouseX, int mouseY) {
+        // Could add hover effects if desired
+    }
+
+    @Override
+    public void onMouseLeave(int mouseX, int mouseY) {
+        // Could remove hover effects if desired
+    }
+
+    @Override
+    public void renderTooltip(GuiGraphics graphics, int mouseX, int mouseY) {
+        if (tooltip != null && isMouseOver(mouseX, mouseY)) {
+            // Show both tooltip and current progress
+            List<Component> tooltipLines = new ArrayList<>();
+            tooltipLines.add(tooltip);
+
+            // Add progress percentage if not already showing
+            if (!showPercentage) {
+                tooltipLines.add(Component.literal(
+                        String.format(format, progress * 100)
+                ));
+            }
+
+            graphics.renderTooltip(
+                    Minecraft.getInstance().font,
+                    tooltipLines,
+                    null,
+                    mouseX,
+                    mouseY
+            );
+        }
+    }
+
+    @Override
+    public boolean contains(int x, int y) {
+        return isMouseOver(x, y);
+    }
+
+    // Add new methods for better control
+    public float getProgress() {
+        return progress;
+    }
+
+    public float getTargetProgress() {
+        return targetProgress;
+    }
+
+    public void setAnimated(boolean animated) {
+        this.animated = animated;
+    }
+
+    public void setAnimationSpeed(float speed) {
+        this.animationSpeed = Mth.clamp(speed, 0.0f, 1.0f);
+    }
+
+    public void setColors(int backgroundColor, int borderColor, int fillColor) {
+        this.backgroundColor = backgroundColor;
+        this.borderColor = borderColor;
+        this.fillColor = fillColor;
+    }
+
+    public void setGradientColors(int primaryColor, int secondaryColor) {
+        this.fillColor = primaryColor;
+        this.fillColorSecondary = secondaryColor;
     }
 }
 

@@ -8,6 +8,7 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvents;
 
@@ -262,10 +263,82 @@ public class CheckboxComponent extends BaseComponent implements Clickable, Hover
         this.onValueChange = onValueChange;
     }
 
+    public void setText(MutableComponent text) {
+        this.text = text;
+    }
+
+    public void setStyle(String style) {
+        this.style = CheckboxStyle.valueOf(style);
+    }
+
     public enum CheckboxStyle {
         VANILLA,    // Classic Minecraft style
         MODERN,     // Rounded corners with smooth animation
         MINIMAL     // Simple outline with minimal animation
+    }
+
+    @Override
+    public boolean isInteractive() {
+        return active; // Checkbox is interactive when active
+    }
+
+    @Override
+    public boolean onMouseClick(int mouseX, int mouseY, int button) {
+        return onClick(mouseX, mouseY, button); // Delegate to existing click handler
+    }
+
+    @Override
+    public void onMouseEnter(int mouseX, int mouseY) {
+        if (active) {
+            this.hovered = true;
+            onHover(mouseX, mouseY);
+        }
+    }
+
+    @Override
+    public void onMouseLeave(int mouseX, int mouseY) {
+        this.hovered = false;
+        onUnhover();
+    }
+
+    @Override
+    public void onFocused() {
+        // Could add focus visual state if desired
+    }
+
+    @Override
+    public void onFocusLost() {
+        this.hovered = false;
+    }
+
+    @Override
+    public boolean onKeyPress(int keyCode, int scanCode, int modifiers) {
+        // Allow space or enter to toggle checkbox when focused
+        if (active && (keyCode == 32 || keyCode == 257)) { // Space or Enter
+            setChecked(!checked);
+            // Play click sound
+            Minecraft.getInstance().getSoundManager().play(
+                    net.minecraft.client.resources.sounds.SimpleSoundInstance.forUI(
+                            SoundEvents.UI_BUTTON_CLICK, 1.0F
+                    )
+            );
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public void renderTooltip(GuiGraphics graphics, int mouseX, int mouseY) {
+        if (tooltip != null && hovered && active) {
+            graphics.renderTooltip(Minecraft.getInstance().font, tooltip, mouseX, mouseY);
+        }
+    }
+
+    @Override
+    public boolean contains(int x, int y) {
+        // Include both checkbox and text area in hit testing
+        return x >= this.x && x < this.x + this.width &&
+                y >= this.y && y < this.y + this.height;
     }
 }
 

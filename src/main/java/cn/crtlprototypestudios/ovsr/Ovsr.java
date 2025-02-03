@@ -1,5 +1,6 @@
 package cn.crtlprototypestudios.ovsr;
 
+import cn.crtlprototypestudios.ovsr.api.reload.UIResourceManager;
 import com.mojang.logging.LogUtils;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.registries.Registries;
@@ -36,7 +37,7 @@ public class Ovsr {
     // Define mod id in a common place for everything to reference
     public static final String MODID = "ovsr";
     // Directly reference a slf4j logger
-    private static final Logger LOGGER = LogUtils.getLogger();
+    public static final Logger LOGGER = LogUtils.getLogger();
 
     public Ovsr(final FMLJavaModLoadingContext ctx) {
         IEventBus modEventBus = ctx.getModEventBus();
@@ -55,6 +56,7 @@ public class Ovsr {
         // Some common setup code
         LOGGER.info("HELLO FROM COMMON SETUP");
         LOGGER.info("DIRT BLOCK >> {}", ForgeRegistries.BLOCKS.getKey(Blocks.DIRT));
+        UIResourceManager.getInstance().startWatching();
     }
 
     // You can use SubscribeEvent and let the Event Bus discover methods to call

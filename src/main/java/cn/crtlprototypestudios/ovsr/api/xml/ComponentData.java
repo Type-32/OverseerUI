@@ -1,11 +1,18 @@
 package cn.crtlprototypestudios.ovsr.api.xml;
 
 import net.minecraft.network.chat.Component;
+import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
+import org.xml.sax.InputSource;
 
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import java.io.StringReader;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class ComponentData {
@@ -66,6 +73,10 @@ public class ComponentData {
         return attributes.get(name);
     }
 
+    public Map<String, String> getAttributes() {
+        return attributes;
+    }
+
     public String getAttribute(String name, String defaultValue) {
         return attributes.getOrDefault(name, defaultValue);
     }
@@ -102,5 +113,47 @@ public class ComponentData {
 
     public Element getElement() {
         return element;
+    }
+
+    public boolean hasAttribute(String name) {
+        return getAttribute(name) != null;
+    }
+
+    /**
+     * Get the type of component from the element's tag name
+     * @return The tag name (component type) or null if no element exists
+     */
+    public String getType() {
+        return element != null ? element.getTagName() : null;
+    }
+
+    /**
+     * Get all child elements as ComponentData objects
+     * @return List of child ComponentData objects
+     */
+    public List<ComponentData> getChildren() {
+        List<ComponentData> children = new ArrayList<>();
+        if (element != null) {
+            NodeList childNodes = element.getChildNodes();
+            for (int i = 0; i < childNodes.getLength(); i++) {
+                Node node = childNodes.item(i);
+                if (node instanceof Element) {
+                    children.add(new ComponentData((Element) node));
+                }
+            }
+        }
+        return children;
+    }
+
+    /**
+     * Create ComponentData from XML string
+     * @param xml The XML string to parse
+     * @return ComponentData object representing the root element
+     */
+    public static ComponentData fromXML(String xml) throws Exception {
+        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+        DocumentBuilder builder = factory.newDocumentBuilder();
+        Document doc = builder.parse(new InputSource(new StringReader(xml)));
+        return new ComponentData(doc.getDocumentElement());
     }
 }

@@ -21,6 +21,8 @@ public class InputBoxComponent extends BaseComponent implements Clickable, Hover
     private int selectionPos;
     private int frameCount;
     private boolean visible = true;
+    private boolean password = false;
+    private boolean editable = true;
     private int textColor = 0xE0E0E0;
     private int placeholderColor = 0x707070;
     private int backgroundColor = 0x80000000;
@@ -287,5 +289,58 @@ public class InputBoxComponent extends BaseComponent implements Clickable, Hover
 
     public void setValidator(Predicate<String> validator) { this.validator = validator; }
     public void setOnValueChange(Consumer<String> onValueChange) { this.onValueChange = onValueChange; }
+
+    @Override
+    public boolean isInteractive() {
+        return true; // Input boxes are always interactive
+    }
+
+    @Override
+    public void onFocused() {
+        setFocused(true);
+    }
+
+    @Override
+    public void onFocusLost() {
+        setFocused(false);
+    }
+
+    @Override
+    public boolean onKeyPress(int keyCode, int scanCode, int modifiers) {
+        return keyPressed(keyCode, scanCode, modifiers); // Delegate to existing method
+    }
+
+    @Override
+    public boolean onCharTyped(char codePoint, int modifiers) {
+        return charTyped(codePoint, modifiers); // Delegate to existing method
+    }
+
+    @Override
+    public boolean onMouseClick(int mouseX, int mouseY, int button) {
+        return onClick(mouseX, mouseY, button); // Delegate to existing method
+    }
+
+    @Override
+    public void renderTooltip(GuiGraphics graphics, int mouseX, int mouseY) {
+        if (tooltip != null && isMouseOver(mouseX, mouseY) && !focused) {
+            graphics.renderTooltip(Minecraft.getInstance().font, tooltip, mouseX, mouseY);
+        }
+    }
+
+    public void setMaxLength(int intAttribute) {
+        this.maxLength = intAttribute;
+    }
+
+    public void setPassword(boolean password) {
+        this.password = password;
+    }
+
+    public void setEditable(boolean editable) {
+        this.editable = editable;
+    }
+
+    public void setTextFilter(Predicate<String> predicate) {
+        validator = predicate;
+    }
 }
 

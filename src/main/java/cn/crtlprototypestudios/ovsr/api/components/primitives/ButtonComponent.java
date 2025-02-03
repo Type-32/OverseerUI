@@ -7,6 +7,7 @@ import cn.crtlprototypestudios.ovsr.api.xml.ComponentData;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvents;
 
@@ -149,9 +150,44 @@ public class ButtonComponent extends BaseComponent implements Clickable, Hoverab
         this.onClick = onClick;
     }
 
+    public Component getText() {
+        return text;
+    }
+
+    public void setText(MutableComponent text) {
+        this.text = text;
+    }
+
     public enum ButtonStyle {
         VANILLA,
         FLAT,
         OUTLINE
+    }
+
+    @Override
+    public boolean isInteractive() {
+        return active; // Buttons are interactive when active
+    }
+
+    @Override
+    public boolean onMouseClick(int mouseX, int mouseY, int button) {
+        return onClick(mouseX, mouseY, button); // Delegate to existing onClick method
+    }
+
+    @Override
+    public void onMouseEnter(int mouseX, int mouseY) {
+        onHover(mouseX, mouseY); // Delegate to existing onHover method
+    }
+
+    @Override
+    public void onMouseLeave(int mouseX, int mouseY) {
+        onUnhover(); // Delegate to existing onUnhover method
+    }
+
+    @Override
+    public void renderTooltip(GuiGraphics graphics, int mouseX, int mouseY) {
+        if (tooltip != null && hovered) {
+            graphics.renderTooltip(Minecraft.getInstance().font, tooltip, mouseX, mouseY);
+        }
     }
 }

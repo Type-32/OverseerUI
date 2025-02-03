@@ -104,4 +104,16 @@ public class LabelComponent extends BaseComponent {
     public enum TextAlignment {
         LEFT, CENTER, RIGHT
     }
+
+    @Override
+    public boolean isInteractive() {
+        return false; // Labels are not interactive by default
+    }
+
+    @Override
+    public void renderTooltip(GuiGraphics graphics, int mouseX, int mouseY) {
+        if (tooltip != null && isMouseOver(mouseX, mouseY)) {
+            graphics.renderTooltip(Minecraft.getInstance().font, tooltip, mouseX, mouseY);
+        }
+    }
 }
