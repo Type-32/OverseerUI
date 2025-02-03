@@ -78,6 +78,14 @@ public class ComponentData {
         }
     }
 
+    public float getFloatAttribute(String name, float defaultValue) {
+        try {
+            return Float.parseFloat(getAttribute(name));
+        } catch (NumberFormatException e) {
+            return defaultValue;
+        }
+    }
+
     public boolean getBoolAttribute(String name, boolean defaultValue) {
         var value = getAttribute(name);
         return value != null ? Boolean.parseBoolean(value) : defaultValue;
