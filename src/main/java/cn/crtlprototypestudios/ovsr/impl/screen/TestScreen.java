@@ -1,0 +1,54 @@
+package cn.crtlprototypestudios.ovsr.impl.screen;
+
+import cn.crtlprototypestudios.ovsr.impl.render.ViewportScaling;
+import imgui.ImGui;
+import imgui.flag.ImGuiStyleVar;
+import imgui.flag.ImGuiWindowFlags;
+import imgui.internal.ImGuiDockNode;
+import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.network.chat.Component;
+
+public class TestScreen extends Screen {
+    private boolean showDemoWindow = true;
+    private float[] clearColor = {0.45f, 0.55f, 0.60f, 1.00f};
+
+    public TestScreen() {
+        super(Component.literal("OvsrUI Test Screen"));
+    }
+
+    @Override
+    public void render(GuiGraphics graphics, int mouseX, int mouseY, float partialTicks) {
+        super.render(graphics, mouseX, mouseY, partialTicks);
+
+//        setupDockspace();
+
+        // Test window
+        ImGui.begin("OvsrUI Test Window");
+        ImGui.text("Welcome to OvsrUI!");
+        ImGui.checkbox("Demo Window", showDemoWindow);
+        ImGui.colorEdit4("Clear Color", clearColor);
+
+        if (ImGui.button("Close Screen")) {
+            this.onClose();
+        }
+        ImGui.end();
+
+        // Demo window if enabled
+        if (showDemoWindow) {
+            ImGui.showDemoWindow();
+        }
+
+//        endDockspace();
+    }
+
+    @Override
+    public void onClose() {
+        super.onClose();
+    }
+
+    @Override
+    public boolean isPauseScreen() {
+        return false;
+    }
+}

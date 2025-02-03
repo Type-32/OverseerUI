@@ -1,7 +1,9 @@
 package cn.crtlprototypestudios.ovsr;
 
-import cn.crtlprototypestudios.ovsr.api.reload.UIResourceManager;
+import cn.crtlprototypestudios.ovsr.impl.command.OvsrCommands;
+import cn.crtlprototypestudios.ovsr.impl.render.ImGuiManager;
 import com.mojang.logging.LogUtils;
+import imgui.ImGui;
 import net.minecraft.client.Minecraft;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.food.FoodProperties;
@@ -44,6 +46,7 @@ public class Ovsr {
 
         // Register the commonSetup method for modloading
         modEventBus.addListener(this::commonSetup);
+        MinecraftForge.EVENT_BUS.register(OvsrCommands.class);
 
         // Register ourselves for server and other game events we are interested in
         MinecraftForge.EVENT_BUS.register(this);
@@ -56,7 +59,6 @@ public class Ovsr {
         // Some common setup code
         LOGGER.info("HELLO FROM COMMON SETUP");
         LOGGER.info("DIRT BLOCK >> {}", ForgeRegistries.BLOCKS.getKey(Blocks.DIRT));
-        UIResourceManager.getInstance().startWatching();
     }
 
     // You can use SubscribeEvent and let the Event Bus discover methods to call
@@ -76,5 +78,9 @@ public class Ovsr {
             LOGGER.info("HELLO FROM CLIENT SETUP");
             LOGGER.info("MINECRAFT NAME >> {}", Minecraft.getInstance().getUser().getName());
         }
+    }
+
+    public static boolean shouldCancelGameKeyboardInputs() {
+        return ImGui.isAnyItemActive() || ImGui.isAnyItemFocused();
     }
 }

@@ -61,3 +61,6 @@ mandatory = true
 versionRange = "${minecraft_version_range}"
 ordering = "NONE"
 side = "BOTH"
+
+[mixin]
+config="ovsr.mixins.json"

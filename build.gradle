@@ -3,6 +3,7 @@ buildscript {
         // These repositories are only for Gradle plugins, put any other repositories in the repository block further below
         maven { url = 'https://repo.spongepowered.org/repository/maven-public/' }
         mavenCentral()
+        mavenLocal()
     }
     dependencies {
         classpath 'org.spongepowered:mixingradle:0.7-SNAPSHOT'
@@ -14,6 +15,7 @@ plugins {
     id 'idea'
     id 'net.minecraftforge.gradle' version '[6.0.16,6.2)'
     id 'org.spongepowered.mixin' version '0.7.+'
+    id 'com.github.johnrengelman.shadow' version '7.1.2'  // Add shadow plugin
 }
 
 apply plugin: 'org.spongepowered.mixin'
@@ -27,6 +29,7 @@ base {
 
 java {
     toolchain.languageVersion = JavaLanguageVersion.of(17)
+    withSourcesJar()
 }
 
 minecraft {
@@ -140,6 +143,13 @@ repositories {
     // flatDir {
     //     dir 'libs'
     // }
+    mavenLocal()
+    mavenCentral()
+}
+
+configurations {
+    shade
+    implementation.extendsFrom shade
 }
 
 dependencies {
@@ -169,8 +179,34 @@ dependencies {
 
     implementation fg.deobf("org.spongepowered:mixin:0.8.5")
 
-}
+    implementation 'com.google.code.findbugs:jsr305:3.0.2'
 
+//    implementation "io.github.spair:imgui-java-binding:${project.imgui_version}"
+//    shadow "io.github.spair:imgui-java-binding:${project.imgui_version}"
+//    implementation "io.github.spair:imgui-java-lwjgl3:${project.imgui_version}"
+//    shadow "io.github.spair:imgui-java-lwjgl3:${project.imgui_version}"
+//
+//    implementation "io.github.spair:imgui-java-natives-windows:${project.imgui_version}"
+//    shadow "io.github.spair:imgui-java-natives-windows:${project.imgui_version}"
+//    implementation "io.github.spair:imgui-java-natives-linux:${project.imgui_version}"
+//    shadow "io.github.spair:imgui-java-natives-linux:${project.imgui_version}"
+//    implementation "io.github.spair:imgui-java-natives-macos:${project.imgui_version}"
+//    shadow "io.github.spair:imgui-java-natives-macos:${project.imgui_version}"
+
+//    implementation files("libs/imgui-java-binding-${project.imgui_version}.jar")
+//    implementation files("libs/imgui-java-lwjgl3-${project.imgui_version}.jar")
+//    implementation files("libs/imgui-java-natives-windows-${project.imgui_version}.jar")
+//    implementation files("libs/imgui-java-natives-linux-${project.imgui_version}.jar")
+//    implementation files("libs/imgui-java-natives-macos-${project.imgui_version}.jar")
+
+    // Change these to use shade configuration
+    shade "io.github.spair:imgui-java-binding:${project.imgui_version}"
+    shade "io.github.spair:imgui-java-lwjgl3:${project.imgui_version}"
+    shade "io.github.spair:imgui-java-natives-windows:${project.imgui_version}"
+    shade "io.github.spair:imgui-java-natives-linux:${project.imgui_version}"
+    shade "io.github.spair:imgui-java-natives-macos:${project.imgui_version}"
+
+}
 // This block of code expands all declared replace properties in the specified resource targets.
 // A missing property will result in an error. Properties are expanded using ${} Groovy notation.
 // When "copyIdeResources" is enabled, this will also run before the game launches in IDE environments.
@@ -208,3 +244,43 @@ tasks.named('jar', Jar).configure {
 tasks.withType(JavaCompile).configureEach {
     options.encoding = 'UTF-8' // Use the UTF-8 charset for Java compilation
 }
+
+//shadowJar {
+//    configurations = [project.configurations.shadow]
+////    classifier 'shadow-dev'
+//    dependencies {
+//        exclude(dependency('org.lwjgl:lwjgl'))
+//        exclude(dependency('org.lwjgl:lwjgl-glfw'))
+//        exclude(dependency('org.lwjgl:lwjgl-opengl'))
+//    }
+//}
+
+//remapJar {
+//    dependsOn shadowJar
+//    input.set shadowJar.archiveFile.get()
+//}
+
+shadowJar {
+    configurations = [project.configurations.shade]
+
+    // Exclude LWJGL as it's provided by Minecraft
+    dependencies {
+        exclude(dependency('org.lwjgl:.*:.*'))
+    }
+
+    // Merge service files
+    mergeServiceFiles()
+
+    // Relocate ImGui to avoid conflicts
+//    relocate 'imgui', 'cn.crtlprototypestudios.ovsr.imgui'
+}
+
+reobf {
+    shadowJar {}
+}
+
+jar {
+    enabled = false
+}
+
+tasks.build.dependsOn tasks.shadowJar
