@@ -1,6 +1,6 @@
-package cn.crtlprototypestudios.ovsr.impl.theme;
+package cn.crtlprototypestudios.ovsr.client.impl.theme;
 
-import cn.crtlprototypestudios.ovsr.impl.interfaces.Theme;
+import cn.crtlprototypestudios.ovsr.client.impl.interfaces.Theme;
 import imgui.ImGui;
 
 public class ImGuiLightTheme implements Theme {

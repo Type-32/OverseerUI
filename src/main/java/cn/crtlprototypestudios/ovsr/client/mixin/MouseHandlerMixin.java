@@ -1,4 +1,4 @@
-package cn.crtlprototypestudios.ovsr.mixin;
+package cn.crtlprototypestudios.ovsr.client.mixin;
 
 import imgui.ImGui;
 import net.minecraft.client.MouseHandler;

@@ -1,4 +1,4 @@
-package cn.crtlprototypestudios.ovsr.impl.interfaces;
+package cn.crtlprototypestudios.ovsr.client.impl.interfaces;
 
 public interface Theme {
     void preRender();

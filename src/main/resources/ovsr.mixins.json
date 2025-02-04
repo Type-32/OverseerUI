@@ -1,14 +1,12 @@
 {
   "required": true,
   "minVersion": "0.8",
-  "package": "cn.crtlprototypestudios.ovsr.mixin",
+  "package": "cn.crtlprototypestudios.ovsr.client.mixin",
   "compatibilityLevel": "JAVA_17",
   "refmap": "ovsr.refmap.json",
   "mixins": [
   ],
   "client": [
-    "GameRendererMixin",
-    "GlStateManagerMixin",
     "KeyboardHandlerMixin",
     "MouseHandlerMixin",
     "TailRenderMixin"

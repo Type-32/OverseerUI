@@ -63,4 +63,4 @@ ordering = "NONE"
 side = "BOTH"
 
 [mixin]
-config="ovsr.mixins.json"
+config="${mod_id}.mixins.json"

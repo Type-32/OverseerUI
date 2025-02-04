@@ -1,10 +1,6 @@
-package cn.crtlprototypestudios.ovsr.impl.screen;
+package cn.crtlprototypestudios.ovsr.client.impl.screen;
 
-import cn.crtlprototypestudios.ovsr.impl.render.ViewportScaling;
 import imgui.ImGui;
-import imgui.flag.ImGuiStyleVar;
-import imgui.flag.ImGuiWindowFlags;
-import imgui.internal.ImGuiDockNode;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;

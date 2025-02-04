@@ -1,7 +1,7 @@
-package cn.crtlprototypestudios.ovsr.impl.render;
+package cn.crtlprototypestudios.ovsr.client.impl.render;
 
 import cn.crtlprototypestudios.ovsr.Ovsr;
-import cn.crtlprototypestudios.ovsr.impl.interfaces.Renderable;
+import cn.crtlprototypestudios.ovsr.client.impl.interfaces.Renderable;
 import com.mojang.blaze3d.platform.Window;
 import imgui.*;
 import imgui.flag.*;

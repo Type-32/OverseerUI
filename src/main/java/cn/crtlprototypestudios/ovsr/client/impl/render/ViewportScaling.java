@@ -1,4 +1,4 @@
-package cn.crtlprototypestudios.ovsr.impl.render;
+package cn.crtlprototypestudios.ovsr.client.impl.render;
 
 import com.mojang.blaze3d.platform.Window;
 import imgui.internal.ImGuiDockNode;

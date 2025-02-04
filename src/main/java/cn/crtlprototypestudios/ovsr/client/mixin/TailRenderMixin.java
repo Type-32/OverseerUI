@@ -1,6 +1,6 @@
-package cn.crtlprototypestudios.ovsr.mixin;
+package cn.crtlprototypestudios.ovsr.client.mixin;
 
-import cn.crtlprototypestudios.ovsr.impl.render.ImGuiManager;
+import cn.crtlprototypestudios.ovsr.client.impl.render.ImGuiManager;
 import com.mojang.blaze3d.systems.RenderSystem;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;

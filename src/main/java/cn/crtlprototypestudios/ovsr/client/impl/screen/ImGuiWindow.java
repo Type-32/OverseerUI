@@ -1,8 +1,8 @@
-package cn.crtlprototypestudios.ovsr.impl.screen;
+package cn.crtlprototypestudios.ovsr.client.impl.screen;
 
 import cn.crtlprototypestudios.ovsr.Ovsr;
-import cn.crtlprototypestudios.ovsr.impl.interfaces.Renderable;
-import cn.crtlprototypestudios.ovsr.impl.interfaces.Theme;
+import cn.crtlprototypestudios.ovsr.client.impl.interfaces.Renderable;
+import cn.crtlprototypestudios.ovsr.client.impl.interfaces.Theme;
 import imgui.ImGui;
 import imgui.type.ImBoolean;
 import net.minecraft.network.chat.Component;

@@ -1,7 +1,7 @@
-package cn.crtlprototypestudios.ovsr.mixin;
+package cn.crtlprototypestudios.ovsr.client.mixin;
 
 import cn.crtlprototypestudios.ovsr.Ovsr;
-import cn.crtlprototypestudios.ovsr.impl.render.ImGuiManager;
+import cn.crtlprototypestudios.ovsr.client.impl.render.ImGuiManager;
 import imgui.ImGui;
 import net.minecraft.client.KeyboardHandler;
 import org.spongepowered.asm.mixin.Mixin;
@@ -13,7 +13,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public class KeyboardHandlerMixin {
     @Inject(method = "keyPress", at = @At("HEAD"), cancellable = true)
     private void onKeyPress(long window, int key, int scancode, int action, int mods, CallbackInfo ci) {
-        if (ImGui.getIO().getWantCaptureKeyboard()) {
+        if (Ovsr.shouldCancelGameKeyboardInputs()) {
             ci.cancel();
         }
     }

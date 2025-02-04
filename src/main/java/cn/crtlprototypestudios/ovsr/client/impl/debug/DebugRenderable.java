@@ -1,8 +1,8 @@
-package cn.crtlprototypestudios.ovsr.impl.debug;
+package cn.crtlprototypestudios.ovsr.client.impl.debug;
 
-import cn.crtlprototypestudios.ovsr.impl.interfaces.Renderable;
-import cn.crtlprototypestudios.ovsr.impl.interfaces.Theme;
-import cn.crtlprototypestudios.ovsr.impl.theme.ImGuiDarkTheme;
+import cn.crtlprototypestudios.ovsr.client.impl.interfaces.Renderable;
+import cn.crtlprototypestudios.ovsr.client.impl.interfaces.Theme;
+import cn.crtlprototypestudios.ovsr.client.impl.theme.ImGuiDarkTheme;
 import imgui.ImGui;
 
 public class DebugRenderable implements Renderable {

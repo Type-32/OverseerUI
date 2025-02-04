@@ -1,6 +1,6 @@
-package cn.crtlprototypestudios.ovsr.impl.command;
+package cn.crtlprototypestudios.ovsr.client.impl.command;
 
-import cn.crtlprototypestudios.ovsr.impl.screen.TestScreen;
+import cn.crtlprototypestudios.ovsr.client.impl.screen.TestScreen;
 import net.minecraft.client.Minecraft;
 import net.minecraft.commands.Commands;
 import net.minecraftforge.client.event.RegisterClientCommandsEvent;

@@ -1,4 +1,4 @@
-package cn.crtlprototypestudios.ovsr.impl.screen;
+package cn.crtlprototypestudios.ovsr.client.impl.screen;
 
 import cn.crtlprototypestudios.ovsr.Ovsr;
 import net.minecraft.client.gui.GuiGraphics;
