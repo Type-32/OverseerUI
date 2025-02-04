@@ -52,7 +52,7 @@ jobs:
             Automatic release from main branch
             Commit: ${{ github.sha }}
           draft: false
-          prerelease: true  # Set to true since it's alpha
+          prerelease: false  # Set to true since it's alpha
           files: |
             build/libs/*.jar
         env:
