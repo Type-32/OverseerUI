@@ -14,18 +14,16 @@ public class TestScreen extends Screen {
     private float[] clearColor = {0.45f, 0.55f, 0.60f, 1.00f};
 
     public TestScreen() {
-        super(Component.literal("OvsrUI Test Screen"));
+        super(Component.literal("Overseer UI Test Screen"));
     }
 
     @Override
     public void render(GuiGraphics graphics, int mouseX, int mouseY, float partialTicks) {
         super.render(graphics, mouseX, mouseY, partialTicks);
 
-//        setupDockspace();
-
         // Test window
-        ImGui.begin("OvsrUI Test Window");
-        ImGui.text("Welcome to OvsrUI!");
+        ImGui.begin("Overseer UI Test Window");
+        ImGui.text("Welcome to Overseer UI!");
         ImGui.checkbox("Demo Window", showDemoWindow);
         ImGui.colorEdit4("Clear Color", clearColor);
 
@@ -38,8 +36,6 @@ public class TestScreen extends Screen {
         if (showDemoWindow) {
             ImGui.showDemoWindow();
         }
-
-//        endDockspace();
     }
 
     @Override

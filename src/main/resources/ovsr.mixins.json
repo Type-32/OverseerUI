@@ -8,8 +8,10 @@
   ],
   "client": [
     "GameRendererMixin",
+    "GlStateManagerMixin",
     "KeyboardHandlerMixin",
-    "MouseHandlerMixin"
+    "MouseHandlerMixin",
+    "TailRenderMixin"
   ],
   "injectors": {
     "defaultRequire": 1

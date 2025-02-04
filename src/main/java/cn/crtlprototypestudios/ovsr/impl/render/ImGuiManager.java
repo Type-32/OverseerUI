@@ -8,19 +8,34 @@ import imgui.gl3.ImGuiImplGl3;
 import imgui.glfw.ImGuiImplGlfw;
 import imgui.internal.ImGuiDockNode;
 import net.minecraft.client.Minecraft;
+import org.lwjgl.glfw.GLFW;
 
 public class ImGuiManager {
     private static final ImGuiImplGlfw IMPL_GLFW = new ImGuiImplGlfw();
     private static final ImGuiImplGl3 IMPL_GL3 = new ImGuiImplGl3();
     private static boolean initialized = false;
+    private static long windowHandle;
 
-    public static void initialize(long glHandle) {
+    public static void onGlfwInit(long handle) {
+        if (initialized) return;
+
+        initializeImGui(handle);
+        IMPL_GLFW.init(handle,true);
+        IMPL_GL3.init();
+        windowHandle = handle;
+        initialized = true;
+
+        Ovsr.LOGGER.info("ImGui initialized successfully");
+    }
+
+    public static void initializeImGui(long glHandle) {
         if (initialized) return;
 
         try {
             ImGui.createContext();
 
             final ImGuiIO io = ImGui.getIO();
+
             io.setIniFilename(null); // Don't save settings
             io.addConfigFlags(ImGuiConfigFlags.NavEnableKeyboard);
             io.addConfigFlags(ImGuiConfigFlags.DockingEnable);
@@ -41,46 +56,33 @@ public class ImGuiManager {
 
             // Setup style
             ImGui.styleColorsDark();
-            ImGuiStyle style = ImGui.getStyle();
             if (io.hasConfigFlags(ImGuiConfigFlags.ViewportsEnable)) {
+                final ImGuiStyle style = ImGui.getStyle();
                 style.setWindowRounding(0.0f);
-                // Get the current window background color
-                float[] color = new float[] {0F,0F,0F,0F};
-                style.getColor(ImGuiCol.WindowBg, new ImVec4(color[0], color[1], color[2], color[3]));
-                // Set it back with full alpha
-                color[3] = 1.0f;
-                style.setColor(ImGuiCol.WindowBg, color[0], color[1], color[2], color[3]);
+                style.setColor(ImGuiCol.WindowBg, ImGui.getColorU32(ImGuiCol.WindowBg, 1));
             }
-
-            // Get GLFW window handle
-            IMPL_GLFW.init(glHandle, true);
-            IMPL_GL3.init();
-
-            initialized = true;
-            Ovsr.LOGGER.info("ImGui initialized successfully");
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
     public static void setupDockspace() {
-        int windowFlags = ImGuiWindowFlags.MenuBar | ImGuiWindowFlags.NoDocking;
+        int windowFlags = ImGuiWindowFlags.NoDocking;
 
         Window window = Minecraft.getInstance().getWindow();
-        ImGui.setNextWindowPos(0, 0);
+        ImGui.setNextWindowPos(window.getX(), window.getY(), ImGuiCond.Always);
         ImGui.setNextWindowSize(window.getWidth(), window.getHeight());
 
-        windowFlags |= ImGuiWindowFlags.NoTitleBar | ImGuiWindowFlags.NoCollapse |
-                ImGuiWindowFlags.NoResize | ImGuiWindowFlags.NoMove |
-                ImGuiWindowFlags.NoBringToFrontOnFocus | ImGuiWindowFlags.NoNavFocus;
+        windowFlags |= ImGuiWindowFlags.NoTitleBar | ImGuiWindowFlags.NoCollapse | ImGuiWindowFlags.NoResize | ImGuiWindowFlags.NoMove |
+                ImGuiWindowFlags.NoBringToFrontOnFocus | ImGuiWindowFlags.NoNavFocus | ImGuiWindowFlags.NoBackground |
+                ImGuiWindowFlags.NoNavInputs;
 
         ImGui.pushStyleVar(ImGuiStyleVar.WindowPadding, 0, 0);
         ImGui.pushStyleVar(ImGuiStyleVar.WindowBorderSize, 0);
-        ImGui.begin("OvsrUI Dockspace", windowFlags);
+        ImGui.begin("Overseer UI Dockspace", windowFlags);
         ImGui.popStyleVar(2);
 
-        int dockspaceId = ImGui.getID("OvsrUIDockspace");
-        ImGui.dockSpace(dockspaceId, 0, 0, ImGuiDockNodeFlags.PassthruCentralNode |
+        int dockspaceId = ImGui.dockSpace(Ovsr.getDockId(), 0, 0, ImGuiDockNodeFlags.PassthruCentralNode |
                 ImGuiDockNodeFlags.NoCentralNode | ImGuiDockNodeFlags.NoDockingInCentralNode);
 
         // Update viewport scaling based on central dock node
@@ -90,36 +92,36 @@ public class ImGuiManager {
         }
     }
 
-    public static void endDockspace() {
+    public static void endDockspace(){
         ImGui.end();
     }
 
     public static void onFrameRender() {
-        beginFrame();
-        endFrame();
-    }
-
-    public static void beginFrame() {
         if (!initialized) return;
 
         IMPL_GLFW.newFrame();
         ImGui.newFrame();
-
         setupDockspace();
+
+        // User render code.
+
+
+        endDockspace();
+        ImGui.render();
+        endFrame();
     }
 
     public static void endFrame() {
         if (!initialized) return;
 
-        endDockspace();
-
-        ImGui.render();
         IMPL_GL3.renderDrawData(ImGui.getDrawData());
 
         // Update and Render additional Platform Windows
         if (ImGui.getIO().hasConfigFlags(ImGuiConfigFlags.ViewportsEnable)) {
+            final long backupWindowPtr = GLFW.glfwGetCurrentContext();
             ImGui.updatePlatformWindows();
             ImGui.renderPlatformWindowsDefault();
+            GLFW.glfwMakeContextCurrent(backupWindowPtr);
         }
     }
 

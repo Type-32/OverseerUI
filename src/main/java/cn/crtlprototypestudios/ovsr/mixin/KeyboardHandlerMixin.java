@@ -20,7 +20,7 @@ public class KeyboardHandlerMixin {
 
     @Inject(method="setup", at = @At("TAIL"))
     public void setup(long l, CallbackInfo ci) {
-        ImGuiManager.initialize(l);
+        ImGuiManager.onGlfwInit(l);
     }
 
     @Inject(method = "charTyped", at = @At("HEAD"), cancellable = true)

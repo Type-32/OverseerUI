@@ -52,6 +52,18 @@ public class ViewportScaling {
         return new Vector2d(x, y);
     }
 
+    public static Vector2d scaleWidthHeight(double width, double height) {
+        Window window = getGameWindow();
+
+        float x_scale = (float) WIDTH / window.getScreenWidth();
+        float y_scale = (float) HEIGHT / window.getScreenHeight();
+
+        width *= x_scale;
+        height *= y_scale;
+
+        return new Vector2d(width, height);
+    }
+
     public static boolean isChanged() {
         Window window = getGameWindow();
         return !(window.getWidth() == WIDTH &&

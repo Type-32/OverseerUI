@@ -1,6 +1,8 @@
 package cn.crtlprototypestudios.ovsr;
 
 import cn.crtlprototypestudios.ovsr.impl.command.OvsrCommands;
+import cn.crtlprototypestudios.ovsr.impl.debug.DebugRenderable;
+import cn.crtlprototypestudios.ovsr.impl.interfaces.Renderable;
 import cn.crtlprototypestudios.ovsr.impl.render.ImGuiManager;
 import com.mojang.logging.LogUtils;
 import imgui.ImGui;
@@ -32,6 +34,8 @@ import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 import org.slf4j.Logger;
 
+import java.util.ArrayList;
+
 // The value here should match an entry in the META-INF/mods.toml file
 @Mod(Ovsr.MODID)
 public class Ovsr {
@@ -40,6 +44,8 @@ public class Ovsr {
     public static final String MODID = "ovsr";
     // Directly reference a slf4j logger
     public static final Logger LOGGER = LogUtils.getLogger();
+    public static ArrayList<Renderable> renderstack = new ArrayList<>();
+    public static ArrayList<Renderable> toRemove = new ArrayList<>();
 
     public Ovsr(final FMLJavaModLoadingContext ctx) {
         IEventBus modEventBus = ctx.getModEventBus();
@@ -77,10 +83,34 @@ public class Ovsr {
             // Some client setup code
             LOGGER.info("HELLO FROM CLIENT SETUP");
             LOGGER.info("MINECRAFT NAME >> {}", Minecraft.getInstance().getUser().getName());
+            pushRenderable(new DebugRenderable());
         }
     }
 
     public static boolean shouldCancelGameKeyboardInputs() {
         return ImGui.isAnyItemActive() || ImGui.isAnyItemFocused();
+    }
+
+    public static int getDockId() {
+        return ImGui.getID(getDockIdString());
+    }
+
+    public static String getDockIdString() {
+        return "ovsr.ui.dockspace";
+    }
+
+    public static Renderable pushRenderable(Renderable renderable) {
+        renderstack.add(renderable);
+        return renderable;
+    }
+
+    public static Renderable pullRenderable(Renderable renderable) {
+        renderstack.remove(renderable);
+        return renderable;
+    }
+
+    public static Renderable pullRenderableAfterRender(Renderable renderable) {
+        toRemove.add(renderable);
+        return renderable;
     }
 }
