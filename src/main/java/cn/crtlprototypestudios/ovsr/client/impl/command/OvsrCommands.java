@@ -17,6 +17,11 @@ public class OvsrCommands {
                                             Minecraft.getInstance().setScreen(new TestScreen());
                                             return 1;
                                         }))
+                                .then(Commands.literal("debug")
+                                        .executes(context -> {
+                                            Minecraft.getInstance().setScreen(new TestScreen());
+                                            return 1;
+                                        }))
                         )
 
         );

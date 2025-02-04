@@ -20,6 +20,9 @@ public class HealthBarHUD extends OverseerHUD.HUDElement {
         // Add custom conditions
         if(mc.player == null) return false;
 
+        setAlignment(HorizontalAlignment.LEFT, VerticalAlignment.TOP)
+                .setOffset(10, 10);
+
         return mc.player.isAlive() && // Only show when player is alive
                 !mc.options.hideGui;    // Respect F1 mode
     }
@@ -36,7 +39,7 @@ public class HealthBarHUD extends OverseerHUD.HUDElement {
         ImGui.text("Health: " + (int)health + "/" + (int)maxHealth);
 
         // Draw health bar
-        ImGui.pushStyleColor(ImGuiCol.PlotHistogram, 1.0f, 0.2f, 0.2f, 1.0f);
+        ImGui.pushStyleColor(ImGuiCol.PlotHistogram, 1.0f, 0.2f, 0.2f, 0.8f);
         ImGui.progressBar(health / maxHealth, 120, 12, "");
         ImGui.popStyleColor();
     }

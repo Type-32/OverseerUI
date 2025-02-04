@@ -4,6 +4,7 @@ import cn.crtlprototypestudios.ovsr.client.impl.interfaces.Renderable;
 import cn.crtlprototypestudios.ovsr.client.impl.interfaces.Theme;
 import cn.crtlprototypestudios.ovsr.client.impl.theme.ImGuiDarkTheme;
 import imgui.ImGui;
+import imgui.type.ImBoolean;
 
 public class DebugRenderable implements Renderable {
 
@@ -24,7 +25,7 @@ public class DebugRenderable implements Renderable {
 
     @Override
     public void render() {
-        ImGui.begin("imgui-mc debug");
+        ImGui.begin("imgui-mc debug", new ImBoolean(true));
         ImGui.text("This window is being shown because you are in a forge mod\ndevelopment environment. It will not be shown in-game.\nYou can enable some builtin imgui windows below.");
         if (ImGui.checkbox("Show about window", showAboutWindow))
             showAboutWindow = !showAboutWindow;

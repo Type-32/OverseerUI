@@ -1,20 +1,27 @@
 package cn.crtlprototypestudios.ovsr.client.api.example;
 
 import cn.crtlprototypestudios.ovsr.client.api.OverseerHUD;
+import cn.crtlprototypestudios.ovsr.client.api.OverseerUtility;
 import cn.crtlprototypestudios.ovsr.client.impl.theme.ImGuiDarkTheme;
 import imgui.ImGui;
 import imgui.flag.ImGuiStyleVar;
+import imgui.flag.ImGuiWindowFlags;
 import net.minecraft.client.Minecraft;
 
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 public class NotificationHUD extends OverseerHUD.HUDElement {
-    private final List<Notification> notifications = new ArrayList<>();
+    private final List<Notification> notifications = new CopyOnWriteArrayList<>();
 
     public NotificationHUD() {
         super("notifications", new ImGuiDarkTheme());
+        removeFlags(ImGuiWindowFlags.NoInputs);
+        addFlags(ImGuiWindowFlags.NoMove);
+        setAlignment(HorizontalAlignment.RIGHT, VerticalAlignment.TOP)
+                .setOffset(-10, 10);
     }
 
     @Override
@@ -28,34 +35,40 @@ public class NotificationHUD extends OverseerHUD.HUDElement {
 
     @Override
     protected void renderContent() {
-        Iterator<Notification> iterator = notifications.iterator();
-        while (iterator.hasNext()) {
-            Notification notification = iterator.next();
+        for (int i = 0; i < notifications.size(); i++) {
+            Notification notification = notifications.get(i);
+
             if (notification.isExpired()) {
-                iterator.remove();
+                notifications.remove(notification);
                 continue;
             }
 
-            // Draw notification
+            ImGui.pushID(i); // Push unique ID for this notification group
             ImGui.pushStyleVar(ImGuiStyleVar.Alpha, notification.getAlpha());
+
             ImGui.text(notification.getMessage());
 
             if (notification.hasActions()) {
                 ImGui.sameLine();
-                if (ImGui.button("Accept")) {
+                if (ImGui.button(OverseerUtility.hiddenIndexString("Accept", i))) { // Add index to button label
                     notification.accept();
-                    iterator.remove();
+                    notifications.remove(notification);
+                    ImGui.popStyleVar();
+                    ImGui.popID();
                     continue;
                 }
                 ImGui.sameLine();
-                if (ImGui.button("Deny")) {
+                if (ImGui.button(OverseerUtility.hiddenIndexString("Deny", i))) { // Add index to button label
                     notification.deny();
-                    iterator.remove();
+                    notifications.remove(notification);
+                    ImGui.popStyleVar();
+                    ImGui.popID();
                     continue;
                 }
             }
 
             ImGui.popStyleVar();
+            ImGui.popID();
             ImGui.separator();
         }
     }

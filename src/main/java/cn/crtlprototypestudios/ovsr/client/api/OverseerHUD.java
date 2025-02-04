@@ -3,6 +3,7 @@ package cn.crtlprototypestudios.ovsr.client.api;
 import cn.crtlprototypestudios.ovsr.Ovsr;
 import cn.crtlprototypestudios.ovsr.client.impl.interfaces.Renderable;
 import cn.crtlprototypestudios.ovsr.client.impl.interfaces.Theme;
+import cn.crtlprototypestudios.ovsr.client.impl.render.ViewportScaling;
 import com.mojang.blaze3d.platform.Window;
 import imgui.ImGui;
 import imgui.flag.ImGuiWindowFlags;
@@ -10,11 +11,13 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.ChatScreen;
 import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
 import net.minecraft.client.gui.screens.inventory.InventoryScreen;
+import org.lwjgl.glfw.GLFW;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class OverseerHUD {
+
     private static final List<HUDElement> elements = new ArrayList<>();
 
     public static void addElement(HUDElement element) {
@@ -28,11 +31,31 @@ public class OverseerHUD {
     }
 
     public abstract static class HUDElement implements Renderable {
+        // Alignment enums
+        public enum VerticalAlignment {
+            TOP, CENTER, BOTTOM
+        }
+
+        public enum HorizontalAlignment {
+            LEFT, CENTER, RIGHT
+        }
+
         protected final Theme theme;
         private final String id;
         protected boolean visible = true;
         protected float x = 0, y = 0;
         protected float width = 0, height = 0;
+        protected int windowFlags = ImGuiWindowFlags.NoDecoration |
+                ImGuiWindowFlags.NoBackground |
+                ImGuiWindowFlags.AlwaysAutoResize |
+                ImGuiWindowFlags.NoSavedSettings |
+                ImGuiWindowFlags.NoFocusOnAppearing;
+
+        // Position fields
+        protected VerticalAlignment verticalAlignment = VerticalAlignment.TOP;
+        protected HorizontalAlignment horizontalAlignment = HorizontalAlignment.LEFT;
+        protected float xOffset = 0;
+        protected float yOffset = 0;
 
         // Render condition flags
         protected boolean renderWhenPaused = false;
@@ -62,23 +85,87 @@ public class OverseerHUD {
             if (!shouldRender(mc)) return;
             if (!visible) return;
 
-            if (x != 0 || y != 0) {
-                ImGui.setNextWindowPos(x, y);
-            }
+            // Get window position
+            long window = mc.getWindow().getWindow();
+            int[] winX = new int[1];
+            int[] winY = new int[1];
+            GLFW.glfwGetWindowPos(window, winX, winY);
 
-            int flags = ImGuiWindowFlags.NoDecoration |
-                    ImGuiWindowFlags.NoBackground |
-                    ImGuiWindowFlags.NoInputs |
-                    ImGuiWindowFlags.AlwaysAutoResize |
-                    ImGuiWindowFlags.NoSavedSettings |
-                    ImGuiWindowFlags.NoFocusOnAppearing;
+            // Calculate base position based on alignment
+            float baseX = calculateBaseX();
+            float baseY = calculateBaseY();
 
-            if (ImGui.begin(getName(), flags)) {
+            // Add offsets and window position
+            float finalX = baseX + xOffset + ViewportScaling.X_OFFSET + winX[0];
+            float finalY = baseY + yOffset + ViewportScaling.Y_OFFSET + winY[0];
+
+            ImGui.setNextWindowPos(finalX, finalY);
+
+            if (ImGui.begin(getName(), windowFlags)) {
                 renderContent();
                 width = ImGui.getWindowWidth();
                 height = ImGui.getWindowHeight();
             }
             ImGui.end();
+        }
+
+        private float calculateBaseX() {
+            switch (horizontalAlignment) {
+                case LEFT:
+                    return 0;
+                case CENTER:
+                    return (ViewportScaling.WIDTH - width) / 2;
+                case RIGHT:
+                    return ViewportScaling.WIDTH - width;
+                default:
+                    return 0;
+            }
+        }
+
+        private float calculateBaseY() {
+            switch (verticalAlignment) {
+                case TOP:
+                    return 0;
+                case CENTER:
+                    return (ViewportScaling.HEIGHT - height) / 2;
+                case BOTTOM:
+                    return ViewportScaling.HEIGHT - height;
+                default:
+                    return 0;
+            }
+        }
+
+        // Positioning methods
+        public HUDElement setAlignment(HorizontalAlignment horizontal, VerticalAlignment vertical) {
+            this.horizontalAlignment = horizontal;
+            this.verticalAlignment = vertical;
+            return this;
+        }
+
+        public HUDElement setOffset(float x, float y) {
+            this.xOffset = x;
+            this.yOffset = y;
+            return this;
+        }
+
+        // Flag manipulation methods
+        public HUDElement addFlags(int flags) {
+            this.windowFlags |= flags;
+            return this;
+        }
+
+        public HUDElement removeFlags(int flags) {
+            this.windowFlags &= ~flags;
+            return this;
+        }
+
+        public HUDElement setFlags(int flags) {
+            this.windowFlags = flags;
+            return this;
+        }
+
+        public boolean hasFlag(int flag) {
+            return (windowFlags & flag) != 0;
         }
 
         protected boolean shouldRender(Minecraft mc) {
@@ -136,33 +223,9 @@ public class OverseerHUD {
             return this;
         }
 
-        public HUDElement alignTop(float padding) {
-            this.y = padding;
-            return this;
-        }
-
-        public HUDElement alignBottom(float padding) {
-            Window window = Minecraft.getInstance().getWindow();
-            this.y = window.getGuiScaledHeight() - height - padding;
-            return this;
-        }
-
-        public HUDElement alignLeft(float padding) {
-            this.x = padding;
-            return this;
-        }
-
-        public HUDElement alignRight(float padding) {
-            Window window = Minecraft.getInstance().getWindow();
-            this.x = window.getGuiScaledWidth() - width - padding;
-            return this;
-        }
-
-        // Center alignment methods
         public HUDElement alignCenter() {
-            Window window = Minecraft.getInstance().getWindow();
-            this.x = (window.getGuiScaledWidth() - width) / 2;
-            this.y = (window.getGuiScaledHeight() - height) / 2;
+            this.x = (ViewportScaling.WIDTH - width) / 2;
+            this.y = (ViewportScaling.HEIGHT - height) / 2;
             return this;
         }
 
