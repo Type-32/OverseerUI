@@ -181,10 +181,12 @@ dependencies {
 
     implementation 'com.google.code.findbugs:jsr305:3.0.2'
 
-    compileOnly(annotationProcessor("io.github.llamalad7:mixinextras-common:0.4.1"))
-    implementation(jarJar("io.github.llamalad7:mixinextras-forge:0.4.1")) {
-        jarJar.ranged(it, "[0.4.1,)")
-    }
+//    compileOnly(annotationProcessor("io.github.llamalad7:mixinextras-common:0.4.1"))
+//    implementation(jarJar("io.github.llamalad7:mixinextras-forge:0.4.1")) {
+//        jarJar.ranged(it, "[0.4.1,)")
+//    }
+
+//    shade "io.github.llamalad7:mixinextras-forge:0.4.1"
 
 //    implementation "io.github.spair:imgui-java-binding:${project.imgui_version}"
 //    shadow "io.github.spair:imgui-java-binding:${project.imgui_version}"
@@ -265,6 +267,11 @@ tasks.withType(JavaCompile).configureEach {
 //    input.set shadowJar.archiveFile.get()
 //}
 
+jar {
+    enabled = false
+    dependsOn shadowJar
+}
+
 shadowJar {
     configurations = [project.configurations.shade]
 
@@ -282,10 +289,6 @@ shadowJar {
 
 reobf {
     shadowJar {}
-}
-
-jar {
-    enabled = false
 }
 
 tasks.build.dependsOn tasks.shadowJar

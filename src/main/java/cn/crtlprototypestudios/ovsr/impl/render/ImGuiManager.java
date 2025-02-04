@@ -1,6 +1,7 @@
 package cn.crtlprototypestudios.ovsr.impl.render;
 
 import cn.crtlprototypestudios.ovsr.Ovsr;
+import cn.crtlprototypestudios.ovsr.impl.interfaces.Renderable;
 import com.mojang.blaze3d.platform.Window;
 import imgui.*;
 import imgui.flag.*;
@@ -19,9 +20,16 @@ public class ImGuiManager {
     public static void onGlfwInit(long handle) {
         if (initialized) return;
 
+
+        // Change this line
+        GLFW.glfwSetKeyCallback(handle, (window, key, scancode, action, mods) -> {
+            ImGui.getIO().setKeysDown(key, action != GLFW.GLFW_RELEASE);
+        });
+
         initializeImGui(handle);
-        IMPL_GLFW.init(handle,true);
-        IMPL_GL3.init();
+        IMPL_GLFW.init(handle, true);
+        IMPL_GL3.init("#version 410"); // Specify GLSL version for macOS
+
         windowHandle = handle;
         initialized = true;
 
@@ -104,7 +112,16 @@ public class ImGuiManager {
         setupDockspace();
 
         // User render code.
+        for (Renderable renderable: Ovsr.renderstack) {
+            renderable.getTheme().preRender();
+            renderable.render();
+            renderable.getTheme().postRender();
+        }
 
+        for (Renderable renderable : Ovsr.toRemove) {
+            Ovsr.pullRenderable(renderable);
+        }
+        Ovsr.toRemove.clear();
 
         endDockspace();
         ImGui.render();
