@@ -1,5 +1,5 @@
 # .github/workflows/auto-release.yml
-name: Auto Release
+name: Nightly Build
 
 on:
   push:
