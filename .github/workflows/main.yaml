@@ -33,7 +33,7 @@ jobs:
           # Get commit count
           COMMIT_COUNT=$(git rev-list --count HEAD)
           # Create full version string
-          VERSION="${BASE_VERSION}-release-${COMMIT_COUNT}"
+          VERSION="${BASE_VERSION}"
           echo "version=$VERSION" >> $GITHUB_OUTPUT
           echo "Version will be: $VERSION"
           
