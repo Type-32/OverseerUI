@@ -1,5 +1,6 @@
 package cn.crtlprototypestudios.ovsr.client.impl.command;
 
+import cn.crtlprototypestudios.ovsr.client.api.example.ExampleScreen;
 import cn.crtlprototypestudios.ovsr.client.impl.screen.TestScreen;
 import net.minecraft.client.Minecraft;
 import net.minecraft.commands.Commands;
@@ -17,9 +18,9 @@ public class OvsrCommands {
                                             Minecraft.getInstance().setScreen(new TestScreen());
                                             return 1;
                                         }))
-                                .then(Commands.literal("debug")
+                                .then(Commands.literal("eg2")
                                         .executes(context -> {
-                                            Minecraft.getInstance().setScreen(new TestScreen());
+                                            Minecraft.getInstance().setScreen(new ExampleScreen());
                                             return 1;
                                         }))
                         )

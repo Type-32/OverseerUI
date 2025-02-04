@@ -22,3 +22,5 @@ dependencies {
     implementation 'com.github.Type-32:OverseerUI:dev-SNAPSHOT'
 }
 ```
+Wiki: https://github.com/Type-32/OverseerUI/wiki
+Examples of implementation: https://github.com/Type-32/OverseerUI/tree/dev/src/main/java/cn/crtlprototypestudios/ovsr/client/api/example
