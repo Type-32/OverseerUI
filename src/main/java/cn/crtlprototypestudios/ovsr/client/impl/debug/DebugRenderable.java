@@ -25,7 +25,7 @@ public class DebugRenderable implements Renderable {
     @Override
     public void render() {
         ImGui.begin("imgui-mc debug");
-        ImGui.text("This window is being shown because you are in a fabric mod\ndevelopment environment. It will not be shown in-game.\nYou can enable some builtin imgui windows below.");
+        ImGui.text("This window is being shown because you are in a forge mod\ndevelopment environment. It will not be shown in-game.\nYou can enable some builtin imgui windows below.");
         if (ImGui.checkbox("Show about window", showAboutWindow))
             showAboutWindow = !showAboutWindow;
         if (ImGui.checkbox("Show demo window", showDemoWindow))

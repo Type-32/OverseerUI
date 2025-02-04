@@ -1,5 +1,8 @@
 package cn.crtlprototypestudios.ovsr;
 
+import cn.crtlprototypestudios.ovsr.client.api.OverseerHUD;
+import cn.crtlprototypestudios.ovsr.client.api.example.HealthBarHUD;
+import cn.crtlprototypestudios.ovsr.client.api.example.NotificationHUD;
 import cn.crtlprototypestudios.ovsr.client.impl.command.OvsrCommands;
 import cn.crtlprototypestudios.ovsr.client.impl.debug.DebugRenderable;
 import cn.crtlprototypestudios.ovsr.client.impl.interfaces.Renderable;
@@ -72,6 +75,21 @@ public class Ovsr {
             LOGGER.info("MINECRAFT NAME >> {}", Minecraft.getInstance().getUser().getName());
 //            pushRenderable(new DebugRenderable());
             MixinExtrasBootstrap.init();
+            init();
+        }
+
+        public static void init() {
+            // Create HUD elements
+            var healthBar = new HealthBarHUD();
+            var notifications = new NotificationHUD();
+
+            // Position them on screen
+            healthBar.alignTop(10).alignLeft(10);
+            notifications.alignTop(10).alignRight(10);
+
+            // Add them to the HUD
+            OverseerHUD.addElement(healthBar);
+            OverseerHUD.addElement(notifications);
         }
     }
 

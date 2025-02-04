@@ -1,58 +1,41 @@
 package cn.crtlprototypestudios.ovsr.client.api.example;
 
-import cn.crtlprototypestudios.ovsr.client.api.components.Component;
-import cn.crtlprototypestudios.ovsr.client.api.components.primitives.*;
-import cn.crtlprototypestudios.ovsr.client.api.reactive.Ref;
-import cn.crtlprototypestudios.ovsr.client.api.reactive.composables.UseState;
-import cn.crtlprototypestudios.ovsr.client.api.screen.OverseerScreen;
+import cn.crtlprototypestudios.ovsr.client.api.OverseerScreen;
+import cn.crtlprototypestudios.ovsr.client.impl.screen.ImGuiWindow;
+import cn.crtlprototypestudios.ovsr.client.impl.theme.ImGuiDarkTheme;
+import imgui.ImGui;
 import imgui.flag.ImGuiWindowFlags;
+import net.minecraft.network.chat.Component;
+
+import java.util.List;
 
 public class ExampleScreen extends OverseerScreen {
-    private final Ref<String> username = UseState.useState("username", "", String.class);
-    private final Ref<String> password = UseState.useState("password", "", String.class);
-
-    protected ExampleScreen() {
-        super(net.minecraft.network.chat.Component.literal("Example"), true);
+    public ExampleScreen() {
+        super(Component.literal("Example Screen"));
     }
 
     @Override
-    protected Component setup() {
-        return new Window()
-                .withProps(p -> {
-                    p.set("title", "Login");
-                    p.set("flags", ImGuiWindowFlags.AlwaysAutoResize);
-                })
-                .withChildren(
-                        new VStack()
-                                .withProps(p -> p.set("spacing", 5f))
-                                .withChildren(
-                                        new Text()
-                                                .withProps(p -> p.set("text", "Username:")),
-                                        new Input()
-                                                .withProps(p -> {
-                                                    p.setRef("modelValue", username);
-                                                    p.set("hint", "Enter username");
-                                                }),
-                                        new Text()
-                                                .withProps(p -> p.set("text", "Password:")),
-                                        new Input()
-                                                .withProps(p -> {
-                                                    p.setRef("modelValue", password);
-                                                    p.set("hint", "Enter password");
-                                                }),
-                                        new HStack()
-                                                .withProps(p -> p.set("spacing", 10f))
-                                                .withChildren(
-                                                        new Button()
-                                                                .withProps(p -> {
-                                                                    p.set("text", "Login");
-                                                                }),
-                                                        new Button()
-                                                                .withProps(p -> {
-                                                                    p.set("text", "Cancel");
-                                                                })
-                                                )
-                                )
-                );
+    protected List<ImGuiWindow> initImGui() {
+        return List.of(
+                window("Settings")
+                        .theme(new ImGuiDarkTheme())
+                        .addFlag(ImGuiWindowFlags.NoResize)
+                        .build(() -> {
+                            ImGui.text("Hello World!");
+                            if (ImGui.button("Click me!")) {
+                                // Handle click
+                            }
+                        }),
+
+                window("Statistics")
+                        .notCloseable()
+                        .addFlag(ImGuiWindowFlags.NoResize | ImGuiWindowFlags.NoMove)
+                        .build(() -> {
+                            ImGui.text("Player Stats:");
+                            ImGui.bulletText("Health: 20");
+                            ImGui.bulletText("XP: 30");
+                        })
+        );
     }
 }
+
