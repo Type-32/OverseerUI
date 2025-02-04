@@ -3,6 +3,7 @@ package cn.crtlprototypestudios.ovsr;
 import cn.crtlprototypestudios.ovsr.client.impl.command.OvsrCommands;
 import cn.crtlprototypestudios.ovsr.client.impl.debug.DebugRenderable;
 import cn.crtlprototypestudios.ovsr.client.impl.interfaces.Renderable;
+import com.llamalad7.mixinextras.MixinExtrasBootstrap;
 import com.mojang.logging.LogUtils;
 import imgui.ImGui;
 import net.minecraft.client.Minecraft;
@@ -69,7 +70,8 @@ public class Ovsr {
             // Some client setup code
             LOGGER.info("HELLO FROM CLIENT SETUP");
             LOGGER.info("MINECRAFT NAME >> {}", Minecraft.getInstance().getUser().getName());
-            pushRenderable(new DebugRenderable());
+//            pushRenderable(new DebugRenderable());
+            MixinExtrasBootstrap.init();
         }
     }
 

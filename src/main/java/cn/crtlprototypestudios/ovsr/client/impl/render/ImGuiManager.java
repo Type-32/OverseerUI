@@ -22,9 +22,9 @@ public class ImGuiManager {
 
 
         // Change this line
-        GLFW.glfwSetKeyCallback(handle, (window, key, scancode, action, mods) -> {
-            ImGui.getIO().setKeysDown(key, action != GLFW.GLFW_RELEASE);
-        });
+//        GLFW.glfwSetKeyCallback(handle, (window, key, scancode, action, mods) -> {
+//            ImGui.getIO().setKeysDown(key, action != GLFW.GLFW_RELEASE);
+//        });
 
         initializeImGui(handle);
         IMPL_GLFW.init(handle, true);
@@ -66,7 +66,7 @@ public class ImGuiManager {
             ImGui.styleColorsDark();
             if (io.hasConfigFlags(ImGuiConfigFlags.ViewportsEnable)) {
                 final ImGuiStyle style = ImGui.getStyle();
-                style.setWindowRounding(0.0f);
+                style.setWindowRounding(1.0f);
                 style.setColor(ImGuiCol.WindowBg, ImGui.getColorU32(ImGuiCol.WindowBg, 1));
             }
         } catch (Exception e) {

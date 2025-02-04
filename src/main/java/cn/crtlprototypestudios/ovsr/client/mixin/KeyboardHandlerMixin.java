@@ -13,6 +13,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public class KeyboardHandlerMixin {
     @Inject(method = "keyPress", at = @At("HEAD"), cancellable = true)
     private void onKeyPress(long window, int key, int scancode, int action, int mods, CallbackInfo ci) {
+//        Ovsr.LOGGER.info("Should cancel game keyboard inputs: {} {} {}, {}", Ovsr.shouldCancelGameKeyboardInputs(), ImGui.isAnyItemActive(), ImGui.isAnyItemFocused(), key);
         if (Ovsr.shouldCancelGameKeyboardInputs()) {
             ci.cancel();
         }
@@ -25,6 +26,7 @@ public class KeyboardHandlerMixin {
 
     @Inject(method = "charTyped", at = @At("HEAD"), cancellable = true)
     public void charTyped(long l, int i, int j, CallbackInfo ci) {
+//        Ovsr.LOGGER.info("Should cancel game keyboard inputs: {} {} {}", Ovsr.shouldCancelGameKeyboardInputs(), ImGui.isAnyItemActive(), ImGui.isAnyItemFocused());
         if (Ovsr.shouldCancelGameKeyboardInputs())
             ci.cancel();
     }
