@@ -45,6 +45,17 @@ public abstract class OverseerScreen extends ImGuiScreen {
             return this;
         }
 
+
+        public WindowBuilder removeFlags(int flags) {
+            this.flags &= ~flags;
+            return this;
+        }
+
+        public WindowBuilder setFlags(int flags) {
+            this.flags = flags;
+            return this;
+        }
+
         public ImGuiWindow build(WindowRenderer renderer) {
             return new ImGuiWindow(theme,
                     Component.literal(title),
