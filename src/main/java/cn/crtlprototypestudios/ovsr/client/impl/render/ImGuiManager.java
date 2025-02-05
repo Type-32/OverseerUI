@@ -11,6 +11,9 @@ import imgui.internal.ImGuiDockNode;
 import net.minecraft.client.Minecraft;
 import org.lwjgl.glfw.GLFW;
 
+import java.io.IOException;
+import java.io.InputStream;
+
 public class ImGuiManager {
     private static final ImGuiImplGlfw IMPL_GLFW = new ImGuiImplGlfw();
     private static final ImGuiImplGl3 IMPL_GL3 = new ImGuiImplGl3();
@@ -52,10 +55,40 @@ public class ImGuiManager {
             io.setConfigViewportsNoTaskBarIcon(true);
 
             // Setup font
+            final ImFontGlyphRangesBuilder rangesBuilder = new ImFontGlyphRangesBuilder();
             final ImFontAtlas fontAtlas = io.getFonts();
             final ImFontConfig fontConfig = new ImFontConfig();
-            fontConfig.setGlyphRanges(fontAtlas.getGlyphRangesCyrillic());
-            fontAtlas.addFontDefault();
+
+            rangesBuilder.addRanges(fontAtlas.getGlyphRangesDefault());
+            rangesBuilder.addRanges(fontAtlas.getGlyphRangesChineseSimplifiedCommon());
+//            rangesBuilder.addRanges(fontAtlas.getGlyphRangesChineseFull());
+            rangesBuilder.addRanges(fontAtlas.getGlyphRangesCyrillic());
+
+            short[] glyphRanges = rangesBuilder.buildRanges();
+            fontConfig.setGlyphRanges(glyphRanges);
+//            fontConfig.setSizePixels(16.0f);  // Slightly larger size
+//            fontConfig.setOversampleH(2);     // Horizontal oversampling
+//            fontConfig.setOversampleV(2);     // Vertical oversampling
+//            fontConfig.setRasterizerMultiply(1.2f);  // Make the font slightly bolder
+            fontAtlas.addFontDefault(fontConfig);
+
+            // Optionally, add a specific Chinese font
+            try {
+                // Load font from resources
+                InputStream is = ImGuiManager.class.getResourceAsStream("/assets/ovsr/fonts/NotoSansSC-Medium.ttf");
+                if (is != null) {
+                    byte[] fontData = is.readAllBytes();
+                    fontConfig.setMergeMode(true);
+//                    fontConfig.setSizePixels(16.0f);
+//                    fontConfig.setOversampleH(2);
+//                    fontConfig.setOversampleV(2);
+//                    fontConfig.setRasterizerMultiply(1.2f);
+                    fontAtlas.addFontFromMemoryTTF(fontData, 16.0f, fontConfig, glyphRanges);
+                    is.close();
+                }
+            } catch (IOException e) {
+                Ovsr.LOGGER.error("Failed to load Chinese font", e);
+            }
 
             fontConfig.setMergeMode(true); // When enabled, all fonts added with this config would be merged with the previously added font
             fontConfig.setPixelSnapH(true);
