@@ -13,7 +13,10 @@ import imgui.ImGui;
 import net.minecraft.client.Minecraft;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
+import net.minecraftforge.client.event.RegisterClientCommandsEvent;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.event.server.ServerStartingEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -44,7 +47,6 @@ public class Ovsr {
 
         // Register the commonSetup method for modloading
         modEventBus.addListener(this::commonSetup);
-        MinecraftForge.EVENT_BUS.register(OvsrCommands.class);
 
         // Register ourselves for server and other game events we are interested in
         MinecraftForge.EVENT_BUS.register(this);
@@ -76,6 +78,7 @@ public class Ovsr {
             LOGGER.info("HELLO FROM CLIENT SETUP");
             LOGGER.info("MINECRAFT NAME >> {}", Minecraft.getInstance().getUser().getName());
 //            pushRenderable(new DebugRenderable());
+            MinecraftForge.EVENT_BUS.register(OvsrCommands.class);
             MixinExtrasBootstrap.init();
             init();
         }
@@ -97,6 +100,7 @@ public class Ovsr {
         }
     }
 
+    @OnlyIn(Dist.CLIENT)
     public static boolean shouldCancelGameKeyboardInputs() {
         return ImGui.isAnyItemActive() || ImGui.isAnyItemFocused();
     }

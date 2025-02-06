@@ -4,11 +4,14 @@ import cn.crtlprototypestudios.ovsr.Ovsr;
 import cn.crtlprototypestudios.ovsr.client.impl.render.ImGuiManager;
 import imgui.ImGui;
 import net.minecraft.client.KeyboardHandler;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
+@OnlyIn(Dist.CLIENT)
 @Mixin(KeyboardHandler.class)
 public class KeyboardHandlerMixin {
     @Inject(method = "keyPress", at = @At("HEAD"), cancellable = true)
