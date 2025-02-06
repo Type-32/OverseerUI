@@ -38,7 +38,8 @@ public class Ovsr {
     public static ArrayList<Renderable> renderstack = new ArrayList<>();
     public static ArrayList<Renderable> toRemove = new ArrayList<>();
 
-    public Ovsr(final FMLJavaModLoadingContext ctx) {
+    public Ovsr() {
+        @SuppressWarnings("removal") final FMLJavaModLoadingContext ctx = FMLJavaModLoadingContext.get();
         IEventBus modEventBus = ctx.getModEventBus();
 
         // Register the commonSetup method for modloading
