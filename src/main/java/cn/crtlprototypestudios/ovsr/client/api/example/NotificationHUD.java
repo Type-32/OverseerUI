@@ -7,12 +7,15 @@ import imgui.ImGui;
 import imgui.flag.ImGuiStyleVar;
 import imgui.flag.ImGuiWindowFlags;
 import net.minecraft.client.Minecraft;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
+@OnlyIn(Dist.CLIENT)
 public class NotificationHUD extends OverseerHUD.HUDElement {
     private final List<Notification> notifications = new CopyOnWriteArrayList<>();
 

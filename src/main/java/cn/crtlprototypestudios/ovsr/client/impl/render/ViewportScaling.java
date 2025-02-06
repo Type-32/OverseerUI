@@ -3,8 +3,11 @@ package cn.crtlprototypestudios.ovsr.client.impl.render;
 import com.mojang.blaze3d.platform.Window;
 import imgui.internal.ImGuiDockNode;
 import net.minecraft.client.Minecraft;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import org.joml.Vector2d;
 
+@OnlyIn(Dist.CLIENT)
 public class ViewportScaling {
     public static int X_OFFSET = 0;
     public static int Y_OFFSET = 0;

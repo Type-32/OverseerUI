@@ -6,9 +6,12 @@ import cn.crtlprototypestudios.ovsr.client.impl.theme.ImGuiDarkTheme;
 import imgui.ImGui;
 import imgui.flag.ImGuiWindowFlags;
 import net.minecraft.network.chat.Component;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
 import java.util.List;
 
+@OnlyIn(Dist.CLIENT)
 public class ExampleScreen extends OverseerScreen {
     public ExampleScreen() {
         super(Component.literal("Example Screen"));

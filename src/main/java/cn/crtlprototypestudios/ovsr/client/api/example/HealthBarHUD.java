@@ -6,7 +6,10 @@ import imgui.ImGui;
 import imgui.flag.ImGuiCol;
 import net.minecraft.client.Minecraft;
 import net.minecraft.world.entity.player.Player;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
+@OnlyIn(Dist.CLIENT)
 public class HealthBarHUD extends OverseerHUD.HUDElement {
     public HealthBarHUD() {
         super("health_bar", new ImGuiDarkTheme());

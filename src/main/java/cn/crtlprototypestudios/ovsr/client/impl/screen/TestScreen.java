@@ -9,7 +9,10 @@ import imgui.type.ImString;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
+@OnlyIn(Dist.CLIENT)
 public class TestScreen extends ImGuiScreen {
     private ImFloat floatValue = new ImFloat(0.0f);
     private ImBoolean checkboxValue = new ImBoolean(false);
