@@ -5,7 +5,10 @@ import cn.crtlprototypestudios.ovsr.client.impl.interfaces.Theme;
 import cn.crtlprototypestudios.ovsr.client.impl.theme.ImGuiDarkTheme;
 import imgui.ImGui;
 import imgui.type.ImBoolean;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
+@OnlyIn(Dist.CLIENT)
 public class DebugRenderable implements Renderable {
 
     public static boolean showAboutWindow = false;

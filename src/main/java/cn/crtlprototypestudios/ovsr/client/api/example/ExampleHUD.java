@@ -5,7 +5,10 @@ import cn.crtlprototypestudios.ovsr.client.impl.interfaces.Theme;
 import cn.crtlprototypestudios.ovsr.client.impl.theme.ImGuiDarkTheme;
 import imgui.ImGui;
 import net.minecraft.client.Minecraft;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 
+@OnlyIn(Dist.CLIENT)
 public class ExampleHUD extends OverseerHUD.HUDElement {
     public ExampleHUD() {
         super("overseer_example_hud", new ImGuiDarkTheme());

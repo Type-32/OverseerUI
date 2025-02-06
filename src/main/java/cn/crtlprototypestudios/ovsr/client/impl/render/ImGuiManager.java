@@ -9,11 +9,14 @@ import imgui.gl3.ImGuiImplGl3;
 import imgui.glfw.ImGuiImplGlfw;
 import imgui.internal.ImGuiDockNode;
 import net.minecraft.client.Minecraft;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import org.lwjgl.glfw.GLFW;
 
 import java.io.IOException;
 import java.io.InputStream;
 
+@OnlyIn(Dist.CLIENT)
 public class ImGuiManager {
     private static final ImGuiImplGlfw IMPL_GLFW = new ImGuiImplGlfw();
     private static final ImGuiImplGl3 IMPL_GL3 = new ImGuiImplGl3();
