@@ -23,18 +23,19 @@ public abstract class OverseerScreen extends ImGuiScreen {
         return new WindowBuilder(title);
     }
 
-    public class WindowBuilder {
+    @OnlyIn(Dist.CLIENT)
+    public static class WindowBuilder {
         private final String title;
-        private ImBoolean closeable = new ImBoolean(true);
+        private boolean closeable = true;
         private Theme theme = new ImGuiDarkTheme();
-        private int flags = 0;  // ImGui uses integer flags
+        private int flags = ImGuiWindowFlags.None;  // ImGui uses integer flags
 
         public WindowBuilder(String title) {
             this.title = title;
         }
 
         public WindowBuilder notCloseable() {
-            this.closeable.set(false);
+            this.closeable = false;
             return this;
         }
 
@@ -59,17 +60,12 @@ public abstract class OverseerScreen extends ImGuiScreen {
             return this;
         }
 
-        public ImGuiWindow build(WindowRenderer renderer) {
+        public ImGuiWindow build(WindowRenderer runnable) {
+            // Set window flags before rendering content
             return new ImGuiWindow(theme,
                     Component.literal(title),
-                    () -> {
-                        // Set window flags before rendering content
-                        if (flags != 0) {
-                            ImGui.begin(title, closeable, flags);
-                        }
-                        renderer.renderWindow();
-                    },
-                    closeable.get());
+                    runnable,
+                    closeable, flags);
         }
     }
 }

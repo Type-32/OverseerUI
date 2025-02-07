@@ -68,7 +68,7 @@ public class TestScreen extends ImGuiScreen {
                             ImGui.text("Checkbox: " + checkboxValue);
                             ImGui.text("Input: " + inputText);
                         },
-                        true
+                        true, ImGuiWindowFlags.None
                 ),
 
                 // Stats window
@@ -80,7 +80,7 @@ public class TestScreen extends ImGuiScreen {
                             ImGui.text("Render Distance: " +
                                     net.minecraft.client.Minecraft.getInstance().options.renderDistance().get());
                         },
-                        true
+                        true, ImGuiWindowFlags.None
                 )
         );
     }
