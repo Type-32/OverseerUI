@@ -155,6 +155,11 @@ configurations {
     implementation.extendsFrom shade
 }
 
+ext {
+    lwjglVersion = '3.3.3'
+    imguiVersion = "${project.imgui_version}"
+}
+
 dependencies {
     // Specify the version of Minecraft to use.
     // Any artifact can be supplied so long as it has a "userdev" classifier artifact and is a compatible patcher artifact.
@@ -189,25 +194,12 @@ dependencies {
         jarJar.ranged(it, "[0.4.1,)")
     }
 
-//    shade "io.github.llamalad7:mixinextras-forge:0.4.1"
-
-//    implementation "io.github.spair:imgui-java-binding:${project.imgui_version}"
-//    shadow "io.github.spair:imgui-java-binding:${project.imgui_version}"
-//    implementation "io.github.spair:imgui-java-lwjgl3:${project.imgui_version}"
-//    shadow "io.github.spair:imgui-java-lwjgl3:${project.imgui_version}"
-//
-//    implementation "io.github.spair:imgui-java-natives-windows:${project.imgui_version}"
-//    shadow "io.github.spair:imgui-java-natives-windows:${project.imgui_version}"
-//    implementation "io.github.spair:imgui-java-natives-linux:${project.imgui_version}"
-//    shadow "io.github.spair:imgui-java-natives-linux:${project.imgui_version}"
-//    implementation "io.github.spair:imgui-java-natives-macos:${project.imgui_version}"
-//    shadow "io.github.spair:imgui-java-natives-macos:${project.imgui_version}"
-
-//    implementation files("libs/imgui-java-binding-${project.imgui_version}.jar")
-//    implementation files("libs/imgui-java-lwjgl3-${project.imgui_version}.jar")
-//    implementation files("libs/imgui-java-natives-windows-${project.imgui_version}.jar")
-//    implementation files("libs/imgui-java-natives-linux-${project.imgui_version}.jar")
-//    implementation files("libs/imgui-java-natives-macos-${project.imgui_version}.jar")
+//    ['', '-opengl', '-glfw'].each {
+//        implementation "org.lwjgl:lwjgl$it:3.3.3"
+//        implementation "org.lwjgl:lwjgl$it::natives-windows"
+//        implementation "org.lwjgl:lwjgl$it::natives-macos-arm64"
+//        implementation "org.lwjgl:lwjgl$it::natives-linux"
+//    }
 
     // Change these to use shade configuration
     shade "io.github.spair:imgui-java-binding:${project.imgui_version}"
