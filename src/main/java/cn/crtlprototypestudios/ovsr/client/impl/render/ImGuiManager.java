@@ -32,6 +32,12 @@ public class ImGuiManager {
 //            ImGui.getIO().setKeysDown(key, action != GLFW.GLFW_RELEASE);
 //        });
 
+        GLFW.glfwDefaultWindowHints();
+        GLFW.glfwWindowHint(GLFW.GLFW_CONTEXT_VERSION_MAJOR, 3);
+        GLFW.glfwWindowHint(GLFW.GLFW_CONTEXT_VERSION_MINOR, 2);
+        GLFW.glfwWindowHint(GLFW.GLFW_OPENGL_PROFILE, GLFW.GLFW_OPENGL_CORE_PROFILE);
+        GLFW.glfwWindowHint(GLFW.GLFW_OPENGL_FORWARD_COMPAT, GLFW.GLFW_TRUE);
+
         initializeImGui(handle);
         IMPL_GLFW.init(handle, true);
         IMPL_GL3.init("#version 410"); // Specify GLSL version for macOS

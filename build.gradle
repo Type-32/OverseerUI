@@ -156,7 +156,7 @@ configurations {
 }
 
 ext {
-    lwjglVersion = '3.3.3'
+    lwjglVersion = '3.3.1'
     imguiVersion = "${project.imgui_version}"
 }
 
@@ -195,10 +195,10 @@ dependencies {
     }
 
 //    ['', '-opengl', '-glfw'].each {
-//        implementation "org.lwjgl:lwjgl$it:3.3.3"
-//        implementation "org.lwjgl:lwjgl$it::natives-windows"
-//        implementation "org.lwjgl:lwjgl$it::natives-macos-arm64"
-//        implementation "org.lwjgl:lwjgl$it::natives-linux"
+//        shade "org.lwjgl:lwjgl$it:3.3.3"
+//        shade "org.lwjgl:lwjgl$it::natives-windows"
+//        shade "org.lwjgl:lwjgl$it::natives-macos-arm64"
+//        shade "org.lwjgl:lwjgl$it::natives-linux"
 //    }
 
     // Change these to use shade configuration
@@ -208,6 +208,10 @@ dependencies {
     shade "io.github.spair:imgui-java-natives-linux:${project.imgui_version}"
     shade "io.github.spair:imgui-java-natives-macos:${project.imgui_version}"
 
+    // VERY SKETCHY
+    // TODO: Please remove this if it didn't work out.
+//    shade "org.lwjgl:lwjgl-glfw:${lwjglVersion}"
+//    shade "org.lwjgl:lwjgl-glfw:${lwjglVersion}:natives-macos"
 }
 // This block of code expands all declared replace properties in the specified resource targets.
 // A missing property will result in an error. Properties are expanded using ${} Groovy notation.
